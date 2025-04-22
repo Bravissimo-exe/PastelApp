@@ -28,8 +28,8 @@ public class SplashActivity extends AppCompatActivity {
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
         float dpToPx = getResources().getDisplayMetrics().density;
         int imageHeightPx = (int) (500 * dpToPx); // 500dp en píxeles
-        float finalPosTop = (screenHeight / 2f) - (imageHeightPx * 0.7f);
-        float finalPosBottom = -(screenHeight / 2f) + (imageHeightPx * 0.3f);
+        float finalPosTop = (screenHeight / 2f) - (imageHeightPx * -0.4f);
+        float finalPosBottom = -(screenHeight / 2f) + (imageHeightPx * -0.4f);
 
         //animacion para la imagen de arriba
 
@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
 
         //animacion para la imagen de abajo
         ObjectAnimator animBottom = ObjectAnimator.ofFloat(imgBottom,"translationY", 0f, finalPosBottom);
-        animTop.setDuration(1500);
+        animBottom.setDuration(1500);
 
         //ejecutar las animaciones en paralelo
         AnimatorSet animatorSet = new AnimatorSet();
