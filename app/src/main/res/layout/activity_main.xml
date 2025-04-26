@@ -27,8 +27,10 @@
         android:layout_height="300dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"
+        android:hint="Ingresa el pastel"
         android:background="@color/white"/>
     <Button
+        android:id="@+id/pastelear_button"
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
