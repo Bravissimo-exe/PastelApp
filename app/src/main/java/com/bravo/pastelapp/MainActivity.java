@@ -3,30 +3,31 @@ package com.bravo.pastelapp;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.pm.PackageManager;
+
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.service.autofill.OnClickAction;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import kotlin.ULong;
+import androidx.core.app.NotificationCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    String CHANNEL_ID = "1";
+    private Button buttonPastel;
+    private static final String CANAL_ID = "pasel_app";
+    private static final int NOTIFICACIONES_ID = 1;
+    private NotificationManager notificationManager;
+
+    private String pastelText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,38 +35,47 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        Button buttonPastel = findViewById(R.id.pastelear_button);
+        EditText pastelEdit = findViewById(R.id.pastel_text);
 
-        createNotificationChannel();
+        buttonPastel = findViewById(R.id.pastelear_button);
 
-        buttonPastel.setOnClickListener(v -> createNotification());
+        buttonPastel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pastelText = pastelEdit.getText().toString();
+
+                notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                crearNotificacion();
+                mostrarNotificacion(pastelText);
+
+            }
+        });
     }
 
-    private void createNotification(){
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.pastel_app_icon)
-                .setContentTitle("Pastel")
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(findViewById(R.id.pastel_text)))
-                .build();
-    }
-
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is not in the Support Library.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system. You can't change the importance
-            // or other notification behaviors after this.
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+    private void crearNotificacion() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            CharSequence nombre_canal = "mi canal";
+            String descripcion_canal = "canal para pastelear";
+            int importancia = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel canal = new NotificationChannel(CANAL_ID, nombre_canal, importancia);
+            canal.setDescription(descripcion_canal);
+            notificationManager.createNotificationChannel(canal);
         }
     }
 
-
+    private void mostrarNotificacion(String PastelText) {
+        Notification.Builder builder = null;
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            builder = new Notification.Builder(this,CANAL_ID)
+                    .setSmallIcon(R.drawable.pastel_app_icon)
+                    .setContentTitle("Pastel")
+                    .setContentText(PastelText)
+                    .setPriority(Notification.PRIORITY_DEFAULT)
+                    .setAutoCancel(true);
+        }
+        Notification notification;
+        notification = builder.build();
+        notificationManager.notify(NOTIFICACIONES_ID, notification);
+    }
 
 }
