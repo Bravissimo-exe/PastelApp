@@ -21,22 +21,42 @@
         android:layout_height="100dp"
         android:src="@drawable/pastel_app_plate"/>
 
+    <ImageView
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@color/white"/>
+
+    <TextView
+        android:id="@+id/contador_caracteres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0/100"
+        android:layout_marginTop="90dp"
+        android:layout_marginLeft="270dp"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
     <EditText
         android:id="@+id/pastel_text"
+
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"
-        android:hint="Ingresa el pastel"
-        android:background="@color/white"/>
+        android:maxLength="100"
+        android:hint="Ingresa el pastel" />
+
     <Button
         android:id="@+id/pastelear_button"
+        android:text="Pastelear"
         android:layout_width="200dp"
         android:layout_height="100dp"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="450dp"
+        android:layout_centerHorizontal="true"
         android:background="@color/white"
-        android:text="Pastelear"
+        android:textColor="@color/black"
         android:textSize="30sp"/>
 
 </RelativeLayout>

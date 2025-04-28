@@ -9,9 +9,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 import androidx.activity.EdgeToEdge;
@@ -28,12 +31,13 @@ public class MainActivity extends AppCompatActivity {
 
     private String pastelText;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        TextView contadorTexto = findViewById(R.id.contador_caracteres);
 
         EditText pastelEdit = findViewById(R.id.pastel_text);
 
@@ -47,6 +51,24 @@ public class MainActivity extends AppCompatActivity {
                 notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 crearNotificacion();
                 mostrarNotificacion(pastelText);
+
+            }
+        });
+
+        pastelEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int currentLength = s.length();
+                contadorTexto.setText(currentLength + "/100");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
 
             }
         });
