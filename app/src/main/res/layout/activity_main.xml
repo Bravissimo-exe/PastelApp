@@ -59,4 +59,14 @@
         android:textColor="@color/black"
         android:textSize="30sp"/>
 
+    
+
+    <Switch
+        android:id="@+id/switch_ongoing"
+        android:layout_width="56dp"
+        android:layout_height="53dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="600dp"
+        android:background="@color/white"/>
+
 </RelativeLayout>
