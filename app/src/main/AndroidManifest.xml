@@ -30,6 +30,10 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <receiver
+            android:name=".NotificationRestartReceiver"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

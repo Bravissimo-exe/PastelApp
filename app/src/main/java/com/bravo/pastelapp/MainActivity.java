@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -15,12 +16,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        TextView contadorTexto = findViewById(R.id.contador_caracteres);
-
         EditText pastelEdit = findViewById(R.id.pastel_text);
 
         buttonPastel = findViewById(R.id.pastelear_button);
@@ -54,24 +56,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
 
-        pastelEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int currentLength = s.length();
-                contadorTexto.setText(currentLength + "/100");
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+    public String getPastel(){
+        return pastelText;
     }
 
     private void crearNotificacion() {
@@ -85,19 +73,37 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void mostrarNotificacion(String PastelText) {
-        Notification.Builder builder = null;
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            builder = new Notification.Builder(this,CANAL_ID)
-                    .setSmallIcon(R.drawable.pastel_app_icon)
-                    .setContentTitle("Pastel")
-                    .setContentText(PastelText)
-                    .setPriority(Notification.PRIORITY_DEFAULT)
-                    .setAutoCancel(true);
+    void mostrarNotificacion(String pastelText) {
+        // Intent para detectar el cierre
+        Intent deleteIntent = new Intent(this, NotificationRestartReceiver.class);
+        PendingIntent deletePendingIntent = PendingIntent.getBroadcast(
+                this,
+                0,
+                deleteIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        // Construir notificación
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CANAL_ID)
+                .setSmallIcon(R.drawable.pastel_app_icon)
+                .setContentTitle("Pastel")
+                .setContentText(pastelText)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .setDeleteIntent(deletePendingIntent); // Relanzar al deslizar
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
         }
-        Notification notification;
-        notification = builder.build();
-        notificationManager.notify(NOTIFICACIONES_ID, notification);
+        notificationManager.notify(NOTIFICACIONES_ID, builder.build());
     }
 
 }
