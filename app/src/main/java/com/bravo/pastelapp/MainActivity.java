@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,9 +42,36 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        int[] seekValores = {0, 5, 10, 15, 20, 30};
+
         EditText pastelEdit = findViewById(R.id.pastel_text);
 
+        TextView minutosText = findViewById(R.id.minutos);
+
+        SeekBar minutos = findViewById(R.id.barra_minutos);
+
         buttonPastel = findViewById(R.id.pastelear_button);
+
+        minutosText.setText(seekValores[minutos.getProgress()] + " minutos");
+
+        minutos.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                int valoresMinutos = seekValores[progress];
+                minutosText.setText(valoresMinutos + " minutos");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         buttonPastel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,14 +102,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void mostrarNotificacion(String pastelText) {
-        // Intent para detectar el cierre
-        Intent deleteIntent = new Intent(this, NotificationRestartReceiver.class);
-        PendingIntent deletePendingIntent = PendingIntent.getBroadcast(
-                this,
-                0,
-                deleteIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
-        );
 
         // Construir notificación
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CANAL_ID)
@@ -89,8 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 .setContentTitle("Pastel")
                 .setContentText(pastelText)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true)
-                .setDeleteIntent(deletePendingIntent); // Relanzar al deslizar
+                .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {

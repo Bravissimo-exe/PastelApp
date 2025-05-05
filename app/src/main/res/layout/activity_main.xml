@@ -26,7 +26,8 @@
         android:layout_marginTop="120dp"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:background="@color/white"/>
+        android:background="@color/white"
+        />
 
     <EditText
         android:id="@+id/pastel_text"
@@ -39,25 +40,38 @@
         android:backgroundTint="@color/white"
         android:hint="Ingresa el pastel" />
 
+    <TextView
+        android:id="@+id/minutos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="450dp"
+        android:text="minutos"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"/>
+
+    <SeekBar
+        android:id="@+id/barra_minutos"
+        android:layout_width="193dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="480dp"
+        android:layout_centerHorizontal="true"
+        android:thumbTint="@color/white"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:max="5"
+        android:progress="0"
+        android:progressTint="@color/white"/>
+
     <Button
         android:id="@+id/pastelear_button"
-        android:text="Pastelear"
         android:layout_width="200dp"
         android:layout_height="100dp"
-        android:layout_marginTop="450dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="550dp"
+        android:layout_marginEnd="91dp"
         android:background="@color/white"
+        android:text="Pastelear"
         android:textColor="@color/black"
-        android:textSize="30sp"/>
-
-    
-
-    <Switch
-        android:id="@+id/switch_ongoing"
-        android:layout_width="56dp"
-        android:layout_height="53dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="600dp"
-        android:background="@color/white"/>
+        android:textSize="30sp" />
 
 </RelativeLayout>
